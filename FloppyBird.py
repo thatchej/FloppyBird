@@ -8,27 +8,27 @@ pygame.init()
 size                    = width, height = 960, 640
 screen             		= pygame.display.set_mode(size)
 
-start_button 			= pygame.image.load("start_button.png")
-background_initial 		= pygame.image.load("background_initial.png")
+start_button 			= pygame.image.load("images/start_button.png")
+background_initial 		= pygame.image.load("images/background_initial.png")
 background_initial_rect = background_initial.get_rect()
-background         		= pygame.image.load("background.bmp")
+background         		= pygame.image.load("images/background.bmp")
 background_rect    		= background.get_rect()
 
 #WOW SUCH BIRD VARIABLES
-bird               		= pygame.image.load("bird.png")
+bird               		= pygame.image.load("images/bird.png")
 bird_rect          		= bird.get_rect()
 bird.convert_alpha()
-bird_up               	= pygame.image.load("bird_up.png")
+bird_up               	= pygame.image.load("images/bird_up.png")
 bird_up_rect          	= bird.get_rect()
 bird.convert_alpha()
-bird_down               = pygame.image.load("bird_down.png")
+bird_down               = pygame.image.load("images/bird_down.png")
 bird_down_rect          = bird.get_rect()
 bird.convert_alpha()
 bird_x             		= 200 #the character sprite will always have the same x value
 up 						= "up"
 down					= "down"
 
-pipe_top_middle			= pygame.image.load("pipe_top_middle.png")
+pipe_top_middle			= pygame.image.load("images/pipe_top_middle.png")
 pipe_top_middle_rect	= pipe_top_middle.get_rect()
 
 
