@@ -1,90 +1,61 @@
 import pygame
-import math
 import sys
 
 #initializations
 pygame.init()
+screen = pygame.display.set_mode((960, 640))
+pygame.display.set_caption('Floppy Bird')
 
-size                    = width, height = 960, 640
-screen             		= pygame.display.set_mode(size)
+class Bird(pygame.sprite.Sprite):
+	#main character sprite
+	#goes up when the user presses space
+	#otherwise falls with gravity
 
-start_button 			= pygame.image.load("images/start_button.png")
-background_initial 		= pygame.image.load("images/background_initial.png")
-background_initial_rect = background_initial.get_rect()
-background         		= pygame.image.load("images/background.bmp")
-background_rect    		= background.get_rect()
+	#Constructor
+	def __init__(self):
+		 #call the parent class
+		 pygame.sprite.Sprite.__init__(self)
+		 self.image = pygame.image.load("images/bird.png")
+		 self.rect = self.image.get_rect()
+		 self.rect.x = 200
+		 self.rect.y = 270
+		 self.jumping = 0
 
-#WOW SUCH BIRD VARIABLES
-bird               		= pygame.image.load("images/bird.png")
-bird_up               	= pygame.image.load("images/bird_up.png")
-bird_down               = pygame.image.load("images/bird_down.png")
-bird_x             		= 200 #the character sprite will always have the same x value
+	def jump(self):
+		#if the user presses space, then the bird goes up	
+		for x in range(0, 15):
+			self.rect.y -= 5
+			self.jumping = 1
 
-pipe_top_middle			= pygame.image.load("images/pipe_top_middle.png")
-pipe_bottom_middle		= pygame.image.load("images/pipe_bottom_middle.png") #MAKING THIS RIGHT NOW
-
-gravity            		= -3
-
-#TODO: ADD CLASSES FOR BIRDS AND PIPES INHERITING SPRITES SO WE CAN EASILY DETECT COLLISION AND MAYBE 
-#	   MAKE THIS CODE NOT SO AWFUL
-
-
-
-def draw_bird(orientation, x, y):
-	if(orientation == 'up'):
-		screen.blit(bird_up, (x, y))
-	elif(orientation == 'down'):
-		screen.blit(bird_down, (x, y))
-	else:
-		screen.blit(bird, (x, y))
-
-def draw_pipe_pair(pipe_x, pipe_type):
-	if pipe_type == 'middle':
-		screen.blit(pipe_top_middle, (pipe_x, 0))
-		screen.blit(pipe_bottom_middle, (pipe_x, 360))
-
-def check_for_collision(bird, pipe):
-	if bird.get_rect() == pipe.get_rect:
-		sys.exit()
+	def fall(self):
+		for x in range(0, 15):
+			self.rect.y += 5
 
 def main():
 
-	bird_y = 270
-	pipe_x = 480
+	background = pygame.image.load("images/background.bmp")
+	screen.blit(background, (0, 0))
+	pygame.display.flip()
+
+	bird = Bird()
+	allsprites = pygame.sprite.RenderPlain((bird))
+	clock = pygame.time.Clock()
+	pygame.display.flip()
 
 	#game controlling loop
 	while 1:
+
+		clock.tick(60) #60 fps
+
 		for event in pygame.event.get():
+
 			if event.type == pygame.QUIT:
 				sys.exit()
-
-			if event.type == pygame.KEYDOWN:
-
-				if event.key == pygame.K_SPACE:
-					for x in range(0, 15):
-						bird_y -= 5
-						screen.blit(background, background_rect)
-						draw_pipe_pair(pipe_x, 'middle')	
-						draw_bird('up', bird_x, bird_y)
-						pipe_x -= 2
-						print bird_up.get_rect()
-						print pipe_top_middle.get_rect()
-						#check_for_collision(bird_up, pipe_top_middle)
-						
-						pygame.display.update()
-					
-		#adjusts for gravity and draws the bird, pipes, and background
-		#TODO: Make this a function and call it here
-		for x in range(0, 15):
-			bird_y -= gravity
-			screen.blit(background, background_rect)
-			draw_pipe_pair(pipe_x, 'middle')
-			draw_bird('down', bird_x, bird_y)
-			pipe_x -= 2
-			pipe_top_middle_rect = pipe_top_middle.get_rect() #updates the current rectangle for collision detection purposes
-			pygame.display.update()
-						
-		
+			elif event.type == pygame.K_SPACE:
+				bird.jump()
+    		
+    		
+   
 
 if __name__ == "__main__":
 	main()
