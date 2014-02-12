@@ -47,10 +47,22 @@ class Pipe(pygame.sprite.Sprite):
 	def __init__(self):
 		#call the parent class
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("pipe_top_middle.png")
+		self.image = pygame.image.load("images/pipe_top_middle.png")
 		self.rect = self.image.get_rect()
 		self.rect.x = 480
 		self.rect.y = 0
+		#idea:
+		#list of lists to contain pairs of pipes that go together
+		#     - [[pipe_top_middle, pipe_bottom_middle],[pipe_top_bottom, pipe_bottom_bottom]]
+	
+	def update(self):
+		#moves the pipes from left to right every frame
+		self.rect.x -= 3
+
+
+def did_collide(bird, pipe):
+	#checks to see if a pipe and a bird collided, and if so ends the game
+	return pygame.sprite.collide_rect(bird, pipe)
 
 def main():
 
@@ -68,13 +80,15 @@ def main():
 
 	#prepares game objects
 	bird = Bird()
-	all_sprites = pygame.sprite.RenderPlain((bird))
+	pipe = Pipe()
+	all_sprites = pygame.sprite.RenderPlain((bird, pipe))
 	clock = pygame.time.Clock()
 
 	#game controlling loop
 	while 1:
 
 		clock.tick(60) #60 fps
+		
 		for event in pygame.event.get():
 
 			if event.type == pygame.QUIT:
@@ -84,10 +98,15 @@ def main():
 				if event.key == pygame.K_SPACE:
 					for x in range (0, 23):
 						bird.jump()
+						pipe.update() #keeps pipe movement smooth - probably a better way to do this
+
 						#draws everything so it appears smooth to the user
 						screen.blit(background, (0, 0))
 						all_sprites.draw(screen)
 						pygame.display.flip()
+
+		if did_collide(bird, pipe):
+			sys.exit()
 
 		all_sprites.update()
 		#draws everything
