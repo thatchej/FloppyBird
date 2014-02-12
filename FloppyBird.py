@@ -27,19 +27,30 @@ class Bird(pygame.sprite.Sprite):
 		 self.rect = self.image.get_rect()
 		 self.rect.x = 200
 		 self.rect.y = 270
-		 self.jumping = 0
 
 	def jump(self):
 		#if the user presses space, then the bird goes up
 		self.image = pygame.image.load("images/bird_up.png")
-		self.jumping = 1	
-		for x in range (0,20):
-			self.rect.y -= 5
+		self.rect.y -= 4
 
 	def update(self):
 		#takes care of the gravity aspect of the game
 		self.image = pygame.image.load("images/bird_down.png")
-		self.rect.y += 4
+		self.rect.y += 3
+
+class Pipe(pygame.sprite.Sprite):
+	#pipe sprite
+	#moves right to left while the player dodges them
+	#if the player collides with a pipe, GAME OVER
+
+	#Constructor
+	def __init__(self):
+		#call the parent class
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("pipe_top_middle.png")
+		self.rect = self.image.get_rect()
+		self.rect.x = 480
+		self.rect.y = 0
 
 def main():
 
@@ -69,13 +80,16 @@ def main():
 			if event.type == pygame.QUIT:
 				sys.exit()
 			if event.type == pygame.KEYDOWN:
-				
 				#if the user presses space, the bird jumps
 				if event.key == pygame.K_SPACE:
-					bird.jump()
-			
+					for x in range (0, 23):
+						bird.jump()
+						#draws everything so it appears smooth to the user
+						screen.blit(background, (0, 0))
+						all_sprites.draw(screen)
+						pygame.display.flip()
+
 		all_sprites.update()
-			
 		#draws everything
 		screen.blit(background, (0, 0))
 		all_sprites.draw(screen)
