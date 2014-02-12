@@ -1,10 +1,18 @@
+###################################
+# 		    FloppyBird            #
+#   						      #
+#     A simple game inspired      #
+#	  by the recently viral       #
+#     game 'Flappy Bird' by       #
+#     Dong Nguyen.                #
+#								  #
+#     Author: Jaron Thatcher      #
+#     Date:   Feb 9, 2014         #
+#                                 #
+###################################
+
 import pygame
 import sys
-
-#initializations
-pygame.init()
-screen = pygame.display.set_mode((960, 640))
-pygame.display.set_caption('Floppy Bird')
 
 class Bird(pygame.sprite.Sprite):
 	#main character sprite
@@ -22,40 +30,57 @@ class Bird(pygame.sprite.Sprite):
 		 self.jumping = 0
 
 	def jump(self):
-		#if the user presses space, then the bird goes up	
-		for x in range(0, 15):
+		#if the user presses space, then the bird goes up
+		self.image = pygame.image.load("images/bird_up.png")
+		self.jumping = 1	
+		for x in range (0,20):
 			self.rect.y -= 5
-			self.jumping = 1
 
-	def fall(self):
-		for x in range(0, 15):
-			self.rect.y += 5
+	def update(self):
+		#takes care of the gravity aspect of the game
+		self.image = pygame.image.load("images/bird_down.png")
+		self.rect.y += 4
 
 def main():
 
+	#initializations
+	pygame.init()
+	screen = pygame.display.set_mode((960, 640))
+	pygame.display.set_caption('Floppy Bird')
+
+	#creates background 
 	background = pygame.image.load("images/background.bmp")
+	
+	#displays the background
 	screen.blit(background, (0, 0))
 	pygame.display.flip()
 
+	#prepares game objects
 	bird = Bird()
-	allsprites = pygame.sprite.RenderPlain((bird))
+	all_sprites = pygame.sprite.RenderPlain((bird))
 	clock = pygame.time.Clock()
-	pygame.display.flip()
 
 	#game controlling loop
 	while 1:
 
 		clock.tick(60) #60 fps
-
 		for event in pygame.event.get():
 
 			if event.type == pygame.QUIT:
 				sys.exit()
-			elif event.type == pygame.K_SPACE:
-				bird.jump()
-    		
-    		
-   
+			if event.type == pygame.KEYDOWN:
+				
+				#if the user presses space, the bird jumps
+				if event.key == pygame.K_SPACE:
+					bird.jump()
+			
+		all_sprites.update()
+			
+		#draws everything
+		screen.blit(background, (0, 0))
+		all_sprites.draw(screen)
+		pygame.display.flip()
 
+ 
 if __name__ == "__main__":
 	main()
