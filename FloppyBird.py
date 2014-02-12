@@ -99,13 +99,14 @@ def main():
 					for x in range (0, 23):
 						bird.jump()
 						pipe.update() #keeps pipe movement smooth - probably a better way to do this
-
 						#draws everything so it appears smooth to the user
 						screen.blit(background, (0, 0))
 						all_sprites.draw(screen)
 						pygame.display.flip()
 
 		if did_collide(bird, pipe):
+			sys.exit()
+		if bird.rect.y in range(630, 650):
 			sys.exit()
 
 		all_sprites.update()
@@ -117,3 +118,23 @@ def main():
  
 if __name__ == "__main__":
 	main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
